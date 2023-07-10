@@ -1,27 +1,27 @@
-const qs = require('qs');
+// const qs = require('qs');
 
 const client_id = process.env.SPOTIFY_API_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
-const auth_token = Buffer.from(`${client_id}:${client_secret}`, 'utf-8').toString('base64');
+// const auth_token = Buffer.from(`${client_id}:${client_secret}`, 'utf-8').toString('base64');
 
 async function getAuth() {
   const token_url = 'https://accounts.spotify.com/api/token';
-  const data = qs.stringify({ 'grant_type': 'client_credentials' });
+  // const data = qs.stringify({ 'grant_type': 'client_credentials' });
 
   const res = await fetch(
     token_url,
     {
       method: 'POST',
-      body: data,
-      headers: {
-        'Authorization': `Basic ${auth_token}`,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
+      body: new URLSearchParams({
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret
+      })
     }
   );
 
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error('Failed to fetch data');
   }
 
   return res.json()
@@ -39,31 +39,34 @@ async function getData(access_token, api_url) {
   );
 
   if (!res.ok) {
-    throw new Error('Failed to fetch data')
+    throw new Error('Failed to fetch data');
   }
 
   return res.json()
 }
 
 async function getId() {
-  const response = await getAuth()
-  const r = await getData(response.access_token, "https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=1&offset=0")
-  let source;
-  for (let i of r["albums"]["items"]) {
-    if (i["album_type"] === "single") {
-      let id = i["external_urls"]["spotify"].substring(31);
-      const q = await getData(response.access_token, `https://api.spotify.com/v1/albums/${id}/tracks`)
-      source = q["items"][0]["external_urls"]["spotify"].substring(31);
+  const response = await getAuth();
+  let trackList = [];
+  for (let h = 0; h < 1000; h += 50) {
+    const r = await getData(response.access_token, `https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=50&offset=${h}`);
+    for (let i of r["albums"]["items"]) {
+      if (i["album_type"] === "single") {
+        let id = i["external_urls"]["spotify"].substring(31);
+        const q = await getData(response.access_token, `https://api.spotify.com/v1/albums/${id}/tracks`);
+        let source = q["items"][0]["external_urls"]["spotify"].substring(31);
+        trackList.push(source);
+      }
     }
   }
 
-  return source
+  return trackList[Math.floor(Math.random() * trackList.length)];
 }
 
 export default async function Home() {
-  const id = await getId()
- 
-  let link = `https://open.spotify.com/embed/track/${id}?utm_source=oembed`;
+  const id = await getId();
+  
+  const link = `https://open.spotify.com/embed/track/${id}?utm_source=oembed`;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
