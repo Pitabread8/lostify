@@ -1,4 +1,4 @@
-const client_id = process.env.SPOTIFY_API_ID;
+const client_id = process.env.SPOTIFY_CLIENT_ID;
 const client_secret = process.env.SPOTIFY_CLIENT_SECRET;
 
 async function getAuth() {
@@ -66,13 +66,16 @@ export default async function Home() {
   const response = await getAuth();
   const result = await getData(response.access_token, `https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=50&offset=0`);
   // const access_token = await getAuth().access_token;
-  
+
   // const link = `https://open.spotify.com/embed/track/${id}?utm_source=oembed`;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <div>
+        <a href={`https://accounts.spotify.com/en/authorize?client_id=${client_id}&response_type=code&redirect_uri=http://localhost:3000/callback&scope=playlist-read-private+playlist-read-collaborative+playlist-modify-private+playlist-modify-public`}>Get User Data</a>
+      </div>
       {/* <iframe className="rounded-xl w-screen h-96" title="Spotify Embed: I&apos;ll Be Right There" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={link}></iframe> */}
-        <ClientComponent result={result} token={response.access_token} />
+      <ClientComponent result={result} token={response.access_token} />
     </main>
   )
 }
