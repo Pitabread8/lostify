@@ -1,9 +1,11 @@
 "use client"
 
 import { signIn, signOut, SessionProvider, useSession } from "next-auth/react"
+import AddSong from "./add-song"
 
-function AuthButton() {
+function AuthButton(props) {
     const { data: session, status } = useSession();
+    const { token } = props;
 
     if (status === "loading") {
         return <p>Loading...</p>;
@@ -13,7 +15,7 @@ function AuthButton() {
         const { name, image } = session.user;
 
         return (
-            <div>
+            <>
                 <div className="flex items-center gap-3 absolute left-8 top-6">
                     {image && (
                         <img
@@ -25,17 +27,19 @@ function AuthButton() {
                     <p className="text-md">{name}</p>
                 </div>
                 <button onClick={() => signOut()} className="absolute right-8 top-6 px-4 py-2 text-black bg-white rounded-lg">Sign Out</button>
-            </div>
+                <AddSong token={token} />
+            </>
         );
     }
 
     return <button onClick={() => signIn("spotify")} className="absolute right-8 top-6 px-4 py-2 text-black bg-white rounded-lg">Sign In</button>;
 }
 
-export default function SignIn() {
+export default function SignIn(props) {
+    const { token } = props;
     return (
         <SessionProvider>
-            <AuthButton />
+            <AuthButton token={token} />
         </SessionProvider>
     );
 }
