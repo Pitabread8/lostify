@@ -1,6 +1,8 @@
 const client_id = process.env.AUTH_SPOTIFY_ID;
 const client_secret = process.env.AUTH_SPOTIFY_SECRET;
 import SignIn from "./sign-in"
+import FetchSong from './fetch-song'
+import AddSong from './add-song'
 
 async function getAuth() {
   const token_url = 'https://accounts.spotify.com/api/token';
@@ -24,34 +26,13 @@ async function getAuth() {
   return res.json()
 }
 
-async function getData(access_token, api_url) {
-  const res = await fetch(
-    api_url,
-    {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${access_token}`
-      },
-    }
-  );
-
-  if (!res.ok) {
-    throw new Error('Failed to fetch data');
-  }
-
-  return res.json()
-}
-
-import FetchSong from './fetch-song'
-
 export default async function Home() {
   const response = await getAuth();
-  const result = await getData(response.access_token, `https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=50&offset=0`);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
-      <SignIn />
-      <FetchSong result={result} token={response.access_token} />
+      <SignIn token={response.access_token} />
+      <FetchSong token={response.access_token} />
     </main>
   )
 }
