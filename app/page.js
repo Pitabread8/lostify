@@ -49,10 +49,8 @@ export default async function Home() {
   const result = await getData(response.access_token, `https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=50&offset=0`);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div>
-        <SignIn />
-      </div>
+    <main className="flex min-h-screen flex-col items-center justify-center p-24">
+      <SignIn />
       <FetchSong result={result} token={response.access_token} />
     </main>
   )

@@ -14,9 +14,9 @@ export default function FetchSong(props) {
     const [num, setNum] = useState(0)
 
     return (
-        <div>
-            <button onClick={() => setNum(Math.floor(Math.random() * result["albums"]["items"].length))}>New song</button>
-            <iframe className="rounded-xl w-screen h-96" title="Spotify Embed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={`https://open.spotify.com/embed/album/${result["albums"]["items"][num]["external_urls"]["spotify"].substring(31)}`}></iframe>
-        </div>
+        <>
+            <iframe className="rounded-xl w-96 h-48" title="Spotify Embed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={`https://open.spotify.com/embed/album/${result["albums"]["items"][num]["external_urls"]["spotify"].substring(31)}`}></iframe>
+            <button onClick={() => setNum(Math.floor(Math.random() * result["albums"]["items"].length))} className="text-center p-4 bg-[#1DB954] rounded-lg text-xl">Next Song</button>
+        </>
     )
 }
