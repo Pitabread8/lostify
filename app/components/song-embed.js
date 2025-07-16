@@ -1,6 +1,6 @@
 "use client"
 
-import { generateData } from "../hooks/getData";
+import { useGetData } from "../hooks/useGetData";
 import { useState } from "react";
 import SaveSong from "./save-song"
 
@@ -8,11 +8,11 @@ export default function SongEmbed(props) {
     const { token } = props;
     const [num, setNum] = useState(0);
 
-    const { data: albumData, loading: albumLoading, error: albumError } = generateData(token, "https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=50&offset=0");
+    const { data: albumData, loading: albumLoading, error: albumError } = useGetData(token, "https://api.spotify.com/v1/search?q=tag:hipster&type=album&limit=50&offset=0");
 
     const albumId = albumData?.albums?.items?.[num]?.id;
 
-    const { data: trackData, loading: trackLoading, error: trackError } = generateData(token, `https://api.spotify.com/v1/albums/${albumId}/tracks`);
+    const { data: trackData, loading: trackLoading, error: trackError } = useGetData(token, `https://api.spotify.com/v1/albums/${albumId}/tracks`);
 
     return (
         <>

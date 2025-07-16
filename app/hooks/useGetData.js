@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 
-async function getData(token, api_url) {
+async function generateData(token, api_url) {
     const res = await fetch(
         api_url,
         {
@@ -18,7 +18,7 @@ async function getData(token, api_url) {
     return res.json();
 }
 
-export function generateData(token, api_url) {
+export function useGetData(token, api_url) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -31,7 +31,7 @@ export function generateData(token, api_url) {
             setError(null);
 
             try {
-                const res = await getData(token, api_url);
+                const res = await generateData(token, api_url);
                 setData(res);
             } catch (err) {
                 setError(err.message);
