@@ -41,7 +41,7 @@ export function useGetData(token, api_url) {
         };
 
         fetchData();
-    }, [api_url, token]);
+    }, [api_url]);
 
     return { data, loading, error };
 }
