@@ -1,6 +1,5 @@
 // TO-DO
 // when auth expires, re-authify
-// responsive (mobile, light mode)
 
 const client_id = process.env.AUTH_SPOTIFY_ID;
 const client_secret = process.env.AUTH_SPOTIFY_SECRET;

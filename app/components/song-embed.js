@@ -18,10 +18,10 @@ export default function SongEmbed(props) {
         <>
             {
                 trackData &&
-                <div className="flex flex-col items-center justify-center">
-                    <iframe className="rounded-xl w-[50vw] h-72" title="Spotify Embed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={`https://open.spotify.com/embed/track/${trackData["items"][0]["external_urls"]["spotify"].substring(31)}`}></iframe>
+                <div className="flex flex-col items-center gap-2 md:gap-0 justify-center">
+                    <iframe className="rounded-xl h-24 md:w-[50vw] md:h-72" title="Spotify Embed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={`https://open.spotify.com/embed/track/${trackData["items"][0]["external_urls"]["spotify"].substring(31)}`}></iframe>
                     <div className="flex flex-row gap-8">
-                        <button onClick={() => setNum(Math.floor(Math.random() * albumData["albums"]["items"].length))} className="text-center p-4 bg-[#1DB954] rounded-lg text-xl">Next Song</button>
+                        <button onClick={() => setNum(Math.floor(Math.random() * albumData["albums"]["items"].length))} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Next Song</button>
                         <SaveSong uri={trackData["items"][0]["uri"]} />
                     </div>
                 </div>

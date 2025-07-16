@@ -23,9 +23,9 @@ function SaveButton(props) {
     }, [session]);
 
     return (
-        <div>
-            {session && <button onClick={() => addSong(playlistId, uri, session.accessToken)} className="text-center p-4 bg-[#1DB954] rounded-lg text-xl">Save Song</button>}
-        </div>
+        <>
+            {session && <button onClick={() => addSong(playlistId, uri, session.accessToken)} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
+        </>
     );
 }
 
