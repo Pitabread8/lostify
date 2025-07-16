@@ -1,30 +1,24 @@
 "use client"
 
 import { SessionProvider, useSession } from "next-auth/react"
-import { useEffect, useState, useRef } from "react";
 import { useFindPlaylist } from "../hooks/useFindPlaylist";
 import { useAddSong } from "../hooks/useAddSong";
 
 function SaveButton(props) {
-    const { data: session } = useSession();
-    const [playlistId, setPlaylistId] = useState(null);
-    const isCreated = useRef(false);
     const { uri } = props;
+    const { data: session, status } = useSession();
 
-    useEffect(() => {
-        if (!session?.accessToken || isCreated.current) return;
-        isCreated.current = true;
+    const token = session?.accessToken ?? null;
+    const { playlistId, loading: playlistLoading, error: playlistError } = useFindPlaylist(token);
+    const { addSong, loading: songLoading, error: songError } = useAddSong();
 
-        useFindPlaylist(session.accessToken).then((result) => {
-            setPlaylistId(result);
-        }).catch((error) => {
-            console.error("Error:", error);
-        });
-    }, [session]);
+    const handleClick = () => {
+        addSong(playlistId, uri, token);
+    };
 
     return (
         <>
-            {session && <button onClick={() => useAddSong(playlistId, uri, session.accessToken)} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
+            {session && <button onClick={() => handleClick()} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
         </>
     );
 }
