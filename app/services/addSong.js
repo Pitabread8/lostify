@@ -1,4 +1,4 @@
-export async function useAddSong(playlistId, uri, token) {
+export async function addSong(playlistId, uri, token) {
     if (!playlistId || !uri) return;
 
     const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {

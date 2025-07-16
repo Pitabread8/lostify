@@ -2,8 +2,8 @@
 
 import { SessionProvider, useSession } from "next-auth/react"
 import { useEffect, useState, useRef } from "react";
-import { useFindPlaylist } from "../hooks/useFindPlaylist";
-import { useAddSong } from "../hooks/useAddSong";
+import { findPlaylist } from "../services/findPlaylist";
+import { addSong } from "../services/addSong";
 
 function SaveButton(props) {
     const { data: session } = useSession();
@@ -15,7 +15,7 @@ function SaveButton(props) {
         if (!session?.accessToken || isCreated.current) return;
         isCreated.current = true;
 
-        useFindPlaylist(session.accessToken).then((result) => {
+        findPlaylist(session.accessToken).then((result) => {
             setPlaylistId(result);
         }).catch((error) => {
             console.error("Error:", error);
@@ -24,7 +24,7 @@ function SaveButton(props) {
 
     return (
         <>
-            {session && <button onClick={() => useAddSong(playlistId, uri, session.accessToken)} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
+            {session && <button onClick={() => addSong(playlistId, uri, session.accessToken)} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
         </>
     );
 }
