@@ -1,11 +1,14 @@
 # lostify
 
-Discover "forgotten" songs from the depths of Spotify's library! Inspired by [forgotify.com](https://forgotify.com).
+Discover "forgotten" songs from the depths of Spotify's library! Inspired by [forgotify.com](https://forgotify.com). Made with Next.js, Auth.js, and Spotify Web API.
 
 ## Features
-- Find new songs
+- Find new, little-known songs
 - Integrate with your personal Spotify account
-- And more!
+- Diversify your music taste
+
+## Reflection
+I started this project because I loved the concept of Forgotify, but wanted a cleaner UI and the ability to add songs I liked to a specific playlist. It took a long time to figure out the right method for accessing the Spotify Web API using Next.js, but I'm now much more confident with data fetching. I've also learned the different between client and server components, as well as how to make custom React hooks!
 
 ## Editing
 
