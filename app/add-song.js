@@ -1,18 +1,18 @@
 "use client"
 
 import { SessionProvider, useSession } from "next-auth/react"
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
-function GetPlaylist() {
+function GetPlaylist(props) {
     const { data: session, status } = useSession();
-    const [profile, setProfile] = useState(null);
+    const [playlists, setPlaylists] = useState(null);
     const [playlistId, setPlaylistId] = useState(null);
-    const trackUri = "1sEWrhnrFmGI1QLaAmYJnn";
+    const { uri } = props;
 
     useEffect(() => {
-        if (status === 'authenticated') {
-            async function fetchSpotifyProfile() {
-                const res = await fetch('https://api.spotify.com/v1/me/playlists', {
+        if (session) {
+            async function fetchPlaylists() {
+                const res = await fetch("https://api.spotify.com/v1/me/playlists", {
                     headers: {
                         Authorization: `Bearer ${session.accessToken}`,
                     },
@@ -20,65 +20,71 @@ function GetPlaylist() {
 
                 const data = await res.json();
                 if (!res.ok) {
-                    throw new Error('Failed to fetch data');
+                    throw new Error("Failed to fetch data");
                 } else {
-                    setProfile(data);
+                    setPlaylists(data);
                 }
             }
 
-            fetchSpotifyProfile();
+            fetchPlaylists();
         }
     }, [status, session]);
 
     useEffect(() => {
-        if (profile) {
-            const targetPlaylist = profile.items.find(p => p.name === "Forgotify Songs");
+        if (playlists) {
+            const targetPlaylist = playlists.items.find(p => p.name === "Forgotify Songs");
             if (targetPlaylist) {
                 setPlaylistId(targetPlaylist.id);
             }
         }
-    }, [profile]);
+        // else {
+        //     // create playlist
+        // }
+    }, [playlists]);
 
-    useEffect(() => {
-        if (!playlistId || !trackUri) return;
+    const addSong = () => {
+        console.log(playlistId, uri)
+        if (!playlistId || !uri) return;
 
         async function addTrack() {
             const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-                method: 'POST',
+                method: "POST",
                 headers: {
                     Authorization: `Bearer ${session.accessToken}`,
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    uris: [`spotify:track:${trackUri}`],
+                    uris: [uri],
                 }),
             });
 
             if (!res.ok) {
-                throw new Error('Failed to fetch data');
+                throw new Error("Failed to fetch data");
             } else {
-                console.log('Track added successfully!');
+                console.log("Track added successfully!");
             }
         }
 
         addTrack();
-    }, [playlistId]);
+    }
 
-
-    if (status === 'loading') return <p>Loading...</p>;
-    if (!session) return <p>Please sign in.</p>;
+    // if (status === "loading") return <p>Loading...</p>;
+    // if (!session) return <p>Please sign in.</p>;
 
     return (
         <div>
-            <h1>Spotify Profile</h1>
+            <button onClick={() => addSong()} className="text-center p-4 bg-[#1DB954] rounded-lg text-xl">Save Song</button>
         </div>
     );
 }
 
-export default function Babble() {
+export default function AddSong(props) {
+    const { uri } = props;
+
     return (
         <SessionProvider>
-            <GetPlaylist />
+            {/* {status === "loading" && <p>Loading tracks...</p>} */}
+            <GetPlaylist uri={uri} />
         </SessionProvider>
     );
 }
