@@ -48,7 +48,7 @@ export function useFindPlaylist(token) {
                     body: JSON.stringify({
                         name: "Forgotify Songs",
                         public: false,
-                        description: "Created with Lostify (http://lostify.vercel.app)!",
+                        description: "Created with Lostify (https://lostify-sigma.vercel.app)!",
                     }),
                 });
                 const newPlaylist = await createRes.json();

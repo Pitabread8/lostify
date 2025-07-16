@@ -25,7 +25,7 @@ function AuthButton() {
         );
     }
 
-    return <button onClick={() => signIn("spotify")} className="absolute right-8 top-6 px-4 py-2 text-black bg-white rounded-lg">Sign In</button>;
+    return <button onClick={() => signIn("spotify", { callbackUrl: "/" })} className="absolute right-8 top-6 px-4 py-2 text-black bg-white rounded-lg">Sign In</button>;
 }
 
 export default function SignIn() {

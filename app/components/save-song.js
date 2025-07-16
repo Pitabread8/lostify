@@ -10,7 +10,7 @@ function SaveButton(props) {
 
     const token = session?.accessToken ?? null;
     const { playlistId, loading: playlistLoading, error: playlistError } = useFindPlaylist(token);
-    const { addSong, loading: songLoading, error: songError } = useAddSong();
+    const { addSong, loading: songLoading, error: songError, success } = useAddSong();
 
     const handleClick = () => {
         addSong(playlistId, uri, token);
@@ -18,7 +18,8 @@ function SaveButton(props) {
 
     return (
         <>
-            {session && <button onClick={() => handleClick()} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
+            {session && success != uri && <button onClick={() => handleClick()} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
+            {success === uri && <div className="text-center p-3 md:p-4 text-[#1DB954] rounded-lg text-lg md:text-xl">Song Saved ✔</div>}
         </>
     );
 }
