@@ -1,14 +1,9 @@
 "use client"
 
 import { signIn, signOut, SessionProvider, useSession } from "next-auth/react"
-import AddSong from "./add-song"
 
 function AuthButton() {
-    const { data: session, status } = useSession();
-
-    if (status === "loading") {
-        return <p>Loading...</p>;
-    }
+    const { data: session } = useSession();
 
     if (session) {
         const { name, image } = session.user;
