@@ -22,7 +22,7 @@ export function useAddSong() {
                 body: JSON.stringify({ uris: [uri] }),
             });
 
-            if (!res.ok) throw new Error("Failed to fetch data");
+            if (!res.ok) throw new Error("Failed to add song");
         } catch (err) {
             setError(err.message);
         } finally {

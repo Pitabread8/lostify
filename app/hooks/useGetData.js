@@ -13,7 +13,7 @@ async function generateData(token, api_url) {
         }
     );
 
-    if (!res.ok) throw new Error("Failed to fetch data");
+    if (!res.ok) throw new Error("Failed to fetch embed data");
 
     return res.json();
 }

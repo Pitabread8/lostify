@@ -23,7 +23,7 @@ export function useFindPlaylist(token) {
                     },
                 });
                 const playlistsData = await playlistsRes.json();
-                if (!playlistsRes.ok) throw new Error("Failed to fetch data");
+                if (!playlistsRes.ok) throw new Error("Failed to fetch playlists data");
 
                 const targetPlaylist = playlistsData.items.find(p => p.name === "Forgotify Songs");
                 if (targetPlaylist) {
@@ -37,7 +37,7 @@ export function useFindPlaylist(token) {
                     },
                 });
                 const userData = await userRes.json();
-                if (!userRes.ok) throw new Error("Failed to fetch data");
+                if (!userRes.ok) throw new Error("Failed to fetch user data");
 
                 const createRes = await fetch(`https://api.spotify.com/v1/users/${userData.id}/playlists`, {
                     method: "POST",
@@ -52,7 +52,7 @@ export function useFindPlaylist(token) {
                     }),
                 });
                 const newPlaylist = await createRes.json();
-                if (!createRes.ok) throw new Error("Failed to fetch data");
+                if (!createRes.ok) throw new Error("Failed to create playlist");
                 setPlaylistId(newPlaylist.id);
             } catch (err) {
                 setError(err.message);
