@@ -16,15 +16,11 @@ export default function FetchSong(props) {
 
     return (
         <>
-            {/* {albumLoading && <p>Loading albums...</p>} */}
-            {/* {trackLoading && <p>Loading tracks...</p>} */}
-
             {
                 trackData &&
                 <div>
                     <iframe className="rounded-xl w-[50vw] h-72" title="Spotify Embed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={`https://open.spotify.com/embed/track/${trackData["items"][0]["external_urls"]["spotify"].substring(31)}`}></iframe>
                     <button onClick={() => setNum(Math.floor(Math.random() * albumData["albums"]["items"].length))} className="text-center p-4 bg-[#1DB954] rounded-lg text-xl">Next Song</button>
-                    {/* <p>{JSON.stringify(trackData, null, 2)}</p> */}
                     <AddSong uri={trackData["items"][0]["uri"]} />
                 </div>
             }
