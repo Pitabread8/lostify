@@ -1,21 +1,21 @@
 
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 async function getData(token, api_url) {
     const res = await fetch(
         api_url,
         {
-            method: 'GET',
+            method: "GET",
             headers: {
-                'Authorization': `Bearer ${token}`
+                "Authorization": `Bearer ${token}`
             },
         }
     );
 
     if (!res.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error("Failed to fetch data");
     }
 
     return res.json();
@@ -27,7 +27,12 @@ export function generateData(token, api_url) {
     const [error, setError] = useState(null);
 
     useEffect(() => {
+        if (!token || !api_url) return;
+
         const fetchData = async () => {
+            setLoading(true);
+            setError(null);
+
             try {
                 const res = await getData(token, api_url);
                 setData(res);
@@ -39,6 +44,7 @@ export function generateData(token, api_url) {
         };
 
         fetchData();
-    }, []);
+    }, [api_url]);
+
     return { data, loading, error };
 }
