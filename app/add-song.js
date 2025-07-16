@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 function GetPlaylist() {
     const { data: session, status } = useSession();
     const [profile, setProfile] = useState(null);
+    const [playlistId, setPlaylistId] = useState(null);
+    const trackUri = "1sEWrhnrFmGI1QLaAmYJnn";
 
     useEffect(() => {
         if (status === 'authenticated') {
@@ -17,12 +19,51 @@ function GetPlaylist() {
                 });
 
                 const data = await res.json();
-                setProfile(data);
+                if (!res.ok) {
+                    throw new Error('Failed to fetch data');
+                } else {
+                    setProfile(data);
+                }
             }
 
             fetchSpotifyProfile();
         }
     }, [status, session]);
+
+    useEffect(() => {
+        if (profile) {
+            const targetPlaylist = profile.items.find(p => p.name === "Forgotify Songs");
+            if (targetPlaylist) {
+                setPlaylistId(targetPlaylist.id);
+            }
+        }
+    }, [profile]);
+
+    useEffect(() => {
+        if (!playlistId || !trackUri) return;
+
+        async function addTrack() {
+            const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+                method: 'POST',
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    uris: [`spotify:track:${trackUri}`],
+                }),
+            });
+
+            if (!res.ok) {
+                throw new Error('Failed to fetch data');
+            } else {
+                console.log('Track added successfully!');
+            }
+        }
+
+        addTrack();
+    }, [playlistId]);
+
 
     if (status === 'loading') return <p>Loading...</p>;
     if (!session) return <p>Please sign in.</p>;
@@ -30,7 +71,6 @@ function GetPlaylist() {
     return (
         <div>
             <h1>Spotify Profile</h1>
-            <p>{JSON.stringify(profile, null, 2)}</p>
         </div>
     );
 }
