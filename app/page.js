@@ -1,6 +1,7 @@
 // TO-DO
 // when auth expires, re-authify
 // prevent refreshing page upon sign-in/out
+// convert <img /> to <Image />
 
 const client_id = process.env.AUTH_SPOTIFY_ID;
 const client_secret = process.env.AUTH_SPOTIFY_SECRET;
