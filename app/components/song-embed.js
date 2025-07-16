@@ -1,10 +1,10 @@
 "use client"
 
-import { generateData } from "./hooks/getData";
+import { generateData } from "../hooks/getData";
 import { useState } from "react";
-import AddSong from "./add-song"
+import SaveSong from "./save-song"
 
-export default function FetchSong(props) {
+export default function SongEmbed(props) {
     const { token } = props;
     const [num, setNum] = useState(0);
 
@@ -22,7 +22,7 @@ export default function FetchSong(props) {
                     <iframe className="rounded-xl w-[50vw] h-72" title="Spotify Embed" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy" src={`https://open.spotify.com/embed/track/${trackData["items"][0]["external_urls"]["spotify"].substring(31)}`}></iframe>
                     <div className="flex flex-row gap-8">
                         <button onClick={() => setNum(Math.floor(Math.random() * albumData["albums"]["items"].length))} className="text-center p-4 bg-[#1DB954] rounded-lg text-xl">Next Song</button>
-                        <AddSong uri={trackData["items"][0]["uri"]} />
+                        <SaveSong uri={trackData["items"][0]["uri"]} />
                     </div>
                 </div>
             }

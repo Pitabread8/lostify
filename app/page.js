@@ -1,12 +1,11 @@
 // TO-DO
 // when auth expires, re-authify
-// organize component files
 // responsive (mobile, light mode)
 
 const client_id = process.env.AUTH_SPOTIFY_ID;
 const client_secret = process.env.AUTH_SPOTIFY_SECRET;
-import SignIn from "./sign-in"
-import FetchSong from "./fetch-song"
+import SignIn from "./components/sign-in"
+import SongEmbed from "./components/song-embed"
 
 async function getAuth() {
   const token_url = "https://accounts.spotify.com/api/token";
@@ -34,7 +33,7 @@ export default async function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <SignIn token={response.access_token} />
-      <FetchSong token={response.access_token} />
+      <SongEmbed token={response.access_token} />
     </main>
   )
 }

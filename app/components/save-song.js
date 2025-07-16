@@ -2,8 +2,8 @@
 
 import { SessionProvider, useSession } from "next-auth/react"
 import { useEffect, useState, useRef } from "react";
-import { getOrCreatePlaylist } from "./hooks/getOrCreatePlaylist";
-import { addSong } from "./hooks/addSong";
+import { getOrCreatePlaylist } from "../hooks/getOrCreatePlaylist";
+import { addSong } from "../hooks/addSong";
 
 function SaveButton(props) {
     const { data: session } = useSession();
@@ -29,7 +29,7 @@ function SaveButton(props) {
     );
 }
 
-export default function AddSong(props) {
+export default function SaveSong(props) {
     const { uri } = props;
 
     return (
