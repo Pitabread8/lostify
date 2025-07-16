@@ -1,71 +1,77 @@
 "use client"
 
 import { SessionProvider, useSession } from "next-auth/react"
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function GetPlaylist(props) {
-    const { data: session, status } = useSession();
-    const [playlists, setPlaylists] = useState(null);
+    const { data: session } = useSession();
     const [playlistId, setPlaylistId] = useState(null);
+    const isCreatingRef = useRef(false);
     const { uri } = props;
 
     useEffect(() => {
-        if (session) {
-            async function fetchPlaylists() {
-                const res = await fetch("https://api.spotify.com/v1/me/playlists", {
-                    headers: {
-                        Authorization: `Bearer ${session.accessToken}`,
-                    },
-                });
+        if (!session?.accessToken || isCreatingRef.current) return;
 
-                const data = await res.json();
-                if (!res.ok) {
-                    throw new Error("Failed to fetch data");
-                } else {
-                    setPlaylists(data);
-                }
-            }
+        async function fetchOrCreatePlaylist() {
+            isCreatingRef.current = true;
 
-            fetchPlaylists();
-        }
-    }, [status, session]);
+            const playlistsRes = await fetch("https://api.spotify.com/v1/me/playlists", {
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                },
+            });
+            const playlistsData = await playlistsRes.json();
+            if (!playlistsRes.ok) throw new Error("Failed to fetch data");
 
-    useEffect(() => {
-        if (playlists) {
-            const targetPlaylist = playlists.items.find(p => p.name === "Forgotify Songs");
+            const targetPlaylist = playlistsData.items.find(p => p.name === "Forgotify Songs");
             if (targetPlaylist) {
                 setPlaylistId(targetPlaylist.id);
+                return;
             }
-        }
-        // else {
-        //     // create playlist
-        // }
-    }, [playlists]);
 
-    const addSong = () => {
-        console.log(playlistId, uri)
-        if (!playlistId || !uri) return;
+            const userRes = await fetch('https://api.spotify.com/v1/me', {
+                headers: {
+                    Authorization: `Bearer ${session.accessToken}`,
+                },
+            });
+            const userData = await userRes.json();
+            if (!userRes.ok) throw new Error("Failed to fetch data");
 
-        async function addTrack() {
-            const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            const createRes = await fetch(`https://api.spotify.com/v1/users/${userData.id}/playlists`, {
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${session.accessToken}`,
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    uris: [uri],
+                    name: "Forgotify Songs",
+                    public: false,
+                    description: "Created using Lostify (http://lostify.vercel.app)!",
                 }),
             });
-
-            if (!res.ok) {
-                throw new Error("Failed to fetch data");
-            } else {
-                console.log("Track added successfully!");
-            }
+            const newPlaylist = await createRes.json();
+            if (!createRes.ok) throw new Error("Failed to fetch data");
+            setPlaylistId(newPlaylist.id);
         }
 
-        addTrack();
+        fetchOrCreatePlaylist();
+    }, [session]);
+
+    async function addSong() {
+        if (!playlistId || !uri) return;
+
+        const res = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${session.accessToken}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                uris: [uri],
+            }),
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch data");
     }
 
     // if (status === "loading") return <p>Loading...</p>;

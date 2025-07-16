@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useEffect, useState } from "react";
@@ -14,9 +13,7 @@ async function getData(token, api_url) {
         }
     );
 
-    if (!res.ok) {
-        throw new Error("Failed to fetch data");
-    }
+    if (!res.ok) throw new Error("Failed to fetch data");
 
     return res.json();
 }

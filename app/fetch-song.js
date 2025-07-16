@@ -1,7 +1,7 @@
 "use client"
 
-import { generateData } from './hooks/getData';
-import { useState } from 'react';
+import { generateData } from "./hooks/getData";
+import { useState } from "react";
 import AddSong from "./add-song"
 
 export default function FetchSong(props) {

@@ -18,9 +18,7 @@ async function getAuth() {
     }
   );
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
+  if (!res.ok) throw new Error("Failed to fetch data");
 
   return res.json()
 }
