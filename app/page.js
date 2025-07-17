@@ -4,17 +4,38 @@
 
 const client_id = process.env.AUTH_SPOTIFY_ID;
 const client_secret = process.env.AUTH_SPOTIFY_SECRET;
-import { getAppToken } from "./lib/app-token";
 import SignIn from "./components/sign-in"
 import SongEmbed from "./components/song-embed"
 
+let cachedToken = null;
+let tokenExpiresAt = 0;
+
 async function getPublicToken() {
-  const accessToken = await getAppToken({
-    clientId: client_id,
-    clientSecret: client_secret,
+  if (cachedToken && Date.now() < tokenExpiresAt) {
+    return cachedToken;
+  }
+
+  const basicAuth = Buffer.from(`${client_id}:${client_secret}`).toString("base64");
+
+  const res = await fetch("https://accounts.spotify.com/api/token", {
+    method: "POST",
+    headers: {
+      Authorization: `Basic ${basicAuth}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+    }),
   });
 
-  return accessToken;
+  const data = await res.json();
+
+  if (!res.ok) throw new Error("Failed to fetch token");
+
+  cachedToken = data.access_token;
+  tokenExpiresAt = Date.now() + data.expires_in * 1000;
+
+  return cachedToken;
 }
 
 export default async function Home() {
@@ -24,7 +45,6 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <SignIn />
       <SongEmbed token={response} />
-      <div>{response}</div>
     </main>
   )
 }
