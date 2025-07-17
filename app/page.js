@@ -1,6 +1,8 @@
 // TO-DO
-// prevent refreshing page upon sign-in/out `redirect: false` in signIn()
+// prevent refreshing page upon sign-in/out - redirect: false in signIn()
 // convert <img /> to <Image />
+
+export const dynamic = "force-dynamic";
 
 const client_id = process.env.AUTH_SPOTIFY_ID;
 const client_secret = process.env.AUTH_SPOTIFY_SECRET;
