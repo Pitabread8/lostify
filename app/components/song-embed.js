@@ -2,7 +2,7 @@
 
 import { useGetData } from "../hooks/useGetData";
 import { useState } from "react";
-import SaveSong from "./save-song"
+import SaveSong from "./save-song";
 
 export default function SongEmbed(props) {
     const { token } = props;
