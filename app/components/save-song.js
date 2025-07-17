@@ -16,11 +16,17 @@ function SaveButton(props) {
     const handleClick = () => {
         addSong(playlistId, uri, token);
     };
+    
+    if (status === "loading") {
+        return <p>Loading...</p>; // Prevents flicker or false negatives
+    }
+
+    console.log(status, isSaved)
 
     return (
         <>
-            {session && <button onClick={() => handleClick()} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
-            {/* {isSaved && <div className="text-center p-3 md:p-4 text-[#1DB954] rounded-lg text-lg md:text-xl">Song Saved ✔</div>} */}
+            {session && !isSaved && <button onClick={() => handleClick()} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
+            {isSaved && <div className="text-center p-3 md:p-4 text-[#1DB954] rounded-lg text-lg md:text-xl">Song Saved ✔</div>}
         </>
     );
 }
