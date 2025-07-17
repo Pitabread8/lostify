@@ -1,6 +1,6 @@
 "use client"
 
-import { SessionProvider, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useFindPlaylist } from "../hooks/useFindPlaylist";
 import { useAddSong } from "../hooks/useAddSong";
 
@@ -29,8 +29,6 @@ export default function SaveSong(props) {
     const { uri } = props;
 
     return (
-        <SessionProvider basePath="/api/auth" key="session">
-            <SaveButton uri={uri} />
-        </SessionProvider>
+        <SaveButton uri={uri} />
     );
 }
