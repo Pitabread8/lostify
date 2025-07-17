@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 
 export function useAddSong() {
-    const [success, setSuccess] = useState(false);
+    const [success, setSuccess] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
