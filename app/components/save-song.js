@@ -1,6 +1,6 @@
 "use client"
 
-import { SessionProvider, useSession } from "next-auth/react"
+import { useSession } from "next-auth/react"
 import { useFindPlaylist } from "../hooks/useFindPlaylist";
 import { useAddSong } from "../hooks/useAddSong";
 
@@ -16,12 +16,6 @@ function SaveButton(props) {
     const handleClick = () => {
         addSong(playlistId, uri, token);
     };
-    
-    if (status === "loading") {
-        return <p>Loading...</p>; // Prevents flicker or false negatives
-    }
-
-    console.log(status, isSaved)
 
     return (
         <>
@@ -35,8 +29,6 @@ export default function SaveSong(props) {
     const { uri } = props;
 
     return (
-        <SessionProvider>
-            <SaveButton uri={uri} />
-        </SessionProvider>
+        <SaveButton uri={uri} />
     );
 }
