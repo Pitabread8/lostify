@@ -25,6 +25,7 @@ export async function getAppToken({ clientId, clientSecret }) {
 
     cachedToken = data.access_token;
     tokenExpiresAt = Date.now() + data.expires_in * 1000;
+    console.log(cachedToken, tokenExpiresAt)
 
     return cachedToken;
 }
