@@ -16,12 +16,6 @@ function SaveButton(props) {
     const handleClick = () => {
         addSong(playlistId, uri, token);
     };
-    
-    if (status === "loading") {
-        return <p>Loading...</p>; // Prevents flicker or false negatives
-    }
-
-    console.log(status, isSaved)
 
     return (
         <>
@@ -35,7 +29,7 @@ export default function SaveSong(props) {
     const { uri } = props;
 
     return (
-        <SessionProvider>
+        <SessionProvider basePath="/api/auth" key="session">
             <SaveButton uri={uri} />
         </SessionProvider>
     );
