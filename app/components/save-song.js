@@ -6,7 +6,7 @@ import { useAddSong } from "../hooks/useAddSong";
 
 function SaveButton(props) {
     const { uri } = props;
-    const { data: session, status } = useSession();
+    const { data: session } = useSession();
 
     const token = session?.accessToken ?? null;
     const { playlistId, loading: playlistLoading, error: playlistError } = useFindPlaylist(token);

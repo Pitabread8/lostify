@@ -9,12 +9,18 @@ export function useFindPlaylist(token) {
     const isCreating = useRef(false);
 
     useEffect(() => {
-        if (!token || isCreating.current) return;
+        // if (!token || isCreating.current) return;
+        if (!token || isCreating.current) {
+            console.log("One of the following may not be working: ", token, isCreating.current);
+            return;
+        }
 
         const findOrCreatePlaylist = async () => {
             isCreating.current = true;
             setLoading(true);
             setError(null);
+
+            console.log("Ran findOrCreatePlaylist() function.");
 
             try {
                 const playlistsRes = await fetch("https://api.spotify.com/v1/me/playlists", {
@@ -28,6 +34,7 @@ export function useFindPlaylist(token) {
                 const targetPlaylist = playlistsData.items.find(p => p.name === "Forgotify Songs");
                 if (targetPlaylist) {
                     setPlaylistId(targetPlaylist.id);
+                    console.log("Found existing playlist: ", targetPlaylist.id)
                     return;
                 }
 
@@ -54,6 +61,7 @@ export function useFindPlaylist(token) {
                 const newPlaylist = await createRes.json();
                 if (!createRes.ok) throw new Error("Failed to create playlist");
                 setPlaylistId(newPlaylist.id);
+                console.log("Created a playlist: ", newPlaylist.id)
             } catch (err) {
                 setError(err.message);
             } finally {
