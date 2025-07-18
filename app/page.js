@@ -49,11 +49,11 @@ export default async function Home() {
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
       <div className="mb-12 text-center sm:w-72 md:w-full">
         <h1 className="text-5xl font-bold text-[#1DB954] my-4">Lostify</h1>
-        <p className="text-sm md:text-lg">Discover "forgotten" songs from the depths of Spotify's library!</p>
+        <p className="text-sm md:text-lg">Discover &quot;forgotten&quot; songs from the depths of Spotify&apos;s library!</p>
       </div>
       <SignIn />
       <SongEmbed token={response} />
-      <a className="mt-12 underline hover:text-blue-500 underline-offset-2">How does it work?</a>
+      {/* <a className="mt-12 underline hover:text-blue-500 underline-offset-2">How does it work?</a> */}
     </main>
   )
 }
