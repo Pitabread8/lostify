@@ -8,7 +8,9 @@ import { RxOpenInNewWindow } from "react-icons/rx";
 
 function SaveButton(props) {
     const { uri } = props;
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
+
+    console.log(session, status);
 
     const token = session?.accessToken ?? null;
     const { playlistId, loading: playlistLoading, error: playlistError } = useFindPlaylist(token);
