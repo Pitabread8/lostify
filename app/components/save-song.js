@@ -3,6 +3,8 @@
 import { useSession } from "next-auth/react"
 import { useFindPlaylist } from "../hooks/useFindPlaylist";
 import { useAddSong } from "../hooks/useAddSong";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { RxOpenInNewWindow } from "react-icons/rx";
 
 function SaveButton(props) {
     const { uri } = props;
@@ -20,7 +22,14 @@ function SaveButton(props) {
     return (
         <>
             {session && !isSaved && <button onClick={() => handleClick()} className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl">Save Song</button>}
-            {isSaved && <div className="text-center p-3 md:p-4 text-[#1DB954] rounded-lg text-lg md:text-xl">Song Saved ✔</div>}
+            {isSaved && <div className="text-center p-3 md:p-4 text-[#1DB954] rounded-lg text-lg md:text-xl flex flex-row gap-2 items-center justify-center">
+                <p>Song Saved</p>
+                <IoIosCheckmarkCircleOutline />
+            </div>}
+            {playlistId && <a className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl flex flex-row gap-2 items-center justify-center" href={`https://open.spotify.com/playlist/${playlistId}`} target="_blank">
+                <p>Forgotify Playlist</p>
+                <RxOpenInNewWindow />
+            </a>}
         </>
     );
 }
