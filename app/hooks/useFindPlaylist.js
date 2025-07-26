@@ -25,7 +25,7 @@ export function useFindPlaylist(token) {
                 const playlistsData = await playlistsRes.json();
                 if (!playlistsRes.ok) throw new Error("Failed to fetch playlists data");
 
-                const targetPlaylist = playlistsData.items.find(p => p.name === "Forgotify Songs");
+                const targetPlaylist = playlistsData.items.find(p => p.name === "Lostify Songs");
                 if (targetPlaylist) {
                     setPlaylistId(targetPlaylist.id);
                     return;
@@ -46,7 +46,7 @@ export function useFindPlaylist(token) {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        name: "Forgotify Songs",
+                        name: "Lostify Songs",
                         public: false,
                         description: "Created with Lostify (https://lostify-sigma.vercel.app)!",
                     }),

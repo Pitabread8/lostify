@@ -28,8 +28,8 @@ function SaveButton(props) {
                 <p>Song Saved</p>
                 <IoIosCheckmarkCircleOutline />
             </div>}
-            {playlistId && <a className="text-center p-3 md:p-4 bg-[#1DB954] rounded-lg text-lg md:text-xl flex flex-row gap-2 items-center justify-center" href={`https://open.spotify.com/playlist/${playlistId}`} target="_blank">
-                <p>Forgotify Playlist</p>
+            {playlistId && <a className="text-center hidden p-1 text-[#1DB954] underline underline-offset-4 rounded-lg text-xl md:flex flex-row gap-2 items-center justify-center" href={`https://open.spotify.com/playlist/${playlistId}`} target="_blank">
+                <p>Lostify Playlist</p>
                 <RxOpenInNewWindow />
             </a>}
         </>
