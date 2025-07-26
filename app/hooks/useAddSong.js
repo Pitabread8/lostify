@@ -8,13 +8,7 @@ export function useAddSong() {
     const [error, setError] = useState(null);
 
     const addSong = useCallback(async (playlistId, uri, token) => {
-        // if (!playlistId || !uri || !token) return;
-        if (!playlistId || !uri || !token) {
-            console.log("One of the following is not working: ", playlistId, uri, token);
-            return;
-        }
-
-        console.log("Ran addSong() function.");
+        if (!playlistId || !uri || !token) return;
 
         setSuccess(null);
         setLoading(true);
@@ -34,7 +28,6 @@ export function useAddSong() {
             // else setSuccess(uri);
             else {
                 setSuccess(uri);
-                console.log("It worked!")
             };
         } catch (err) {
             setError(err.message);
